@@ -634,14 +634,7 @@ func TestPubsub(t *testing.T) {
 	}
 	defer brokerCtx.Close()
 	
-	brokerCctx, err := malapi.NewClientContext(brokerCtx, broker_name)
-	if err != nil {
-		t.Fatal("Error creating client context, ", err)
-	}
-
-	updtHandler := broker.NewGenericUpdateValueHandler(mal.NullIntegerList)
-	var mybroker *broker.BrokerHandler
-	mybroker, err = broker.NewBroker(brokerCctx, updtHandler, testpubsubarea.AREA_NUMBER, testpubsubarea.AREA_VERSION, testpubsub1.SERVICE_NUMBER, testpubsub1.DOPUBSUB_OPERATION_NUMBER)
+	mybroker, err := testpubsub1.NewDopubsubBroker(ctx, "broker")
 	if err != nil {
 		t.Fatal("Error creating broker, ", err)
 		return
@@ -813,11 +806,6 @@ func TestPubsubLocal(t *testing.T) {
 		next = mal.NewInteger(int32(*next)+1)
 	}
 	
-//	err = publishOp.Close()
-//	if err != nil {
-//			t.Fatal("Error closing dopubsub publisher")
-//			return
-//	}
 	time.Sleep(500 * time.Millisecond)
 }
 
