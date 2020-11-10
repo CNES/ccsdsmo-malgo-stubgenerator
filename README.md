@@ -9,7 +9,7 @@ The framework CCSDS\_MO\_StubGenerator from ESA is reused.
 
 ### Command line
 
-> java esa.mo.tools.stubgen.StubGenerator -t go -x <xml dir> -r <xml-ref dir> -R <xsd dir> -o <src output dir>
+> java esa.mo.tools.stubgen.StubGenerator -t go -x \<xml dir> -r \<xml-ref dir> -R \<xsd dir> -o \<src output dir>
 
 The classpath must include the following maven artifacts:
 - int.esa.ccsds.mo	StubGenerator
@@ -20,13 +20,13 @@ The classpath must include the following maven artifacts:
 
 The -t go option directs the generator to generate go language output. The link between the generic generator and the go generation package is dynamic, assuming that the StubGenerator_go artifact is in the classpath.
 
-The -x <xml dir> option defines the directory where the generator is supposed to find the input files to process. All xml files in that directory will be processed as CCSDS definitions according to the ServiceSchema model.
+The -x \<xml dir> option defines the directory where the generator is supposed to find the input files to process. All xml files in that directory will be processed as CCSDS definitions according to the ServiceSchema model.
 
-The -r <xml-ref dir> defines the directory where the generator can find CCSDS service definitions required by the files to process. The directory should at least include the ServiceDefMAL.xml file. No code shall be generated for those files.
+The -r \<xml-ref dir> defines the directory where the generator can find CCSDS service definitions required by the files to process. The directory should at least include the ServiceDefMAL.xml file. No code shall be generated for those files.
 
-The -R <xsd dir> defines the directory where the generator is supposed to find XML schemas for the XML files in the other directories.
+The -R \<xsd dir> defines the directory where the generator is supposed to find XML schemas for the XML files in the other directories.
 
-The -o <src output dir> defines the directory where the generator produces go code. The provided directory must have an "src" part which defines the origin of the go source tree. As go packages and the go source files tree are closely related, this option implicitely declares a base package for all the generated go source code.
+The -o \<src output dir> defines the directory where the generator produces go code. The provided directory must have an "src" part which defines the origin of the go source tree. As go packages and the go source files tree are closely related, this option implicitely declares a base package for all the generated go source code.
 
 ## Generated code and language mapping
 
@@ -34,15 +34,17 @@ The -o <src output dir> defines the directory where the generator produces go co
 
 An xml defined area is turned into a go package and its associated directory. The directory is created in the parent directory defined by the -o command line option. The directory name is the area name all in lower letters.
 
-> Area|AreA -> <src output dir>/area
-> package <base package>.area
+> Area|AreA -> \<src output dir>/area
+>
+> package \<base package>.area
 
 ### service
 
 An xml defined service is turned into a go sub-package of the area package. The associated directory name is the service name all in lower letters.
 
-> Service|SerVice -> <src output dir>/area/service
-> package <base package>.area.service
+> Service|SerVice -> \<src output dir>/area/service
+>
+> package \<base package>.area.service
 
 Consumer stubs and provider stubs are also created in the service package. Those stubs are detailed below.
 
@@ -52,23 +54,26 @@ An xml defined composite or enumeration type is turned into a go type in the pac
 Associated list types are generated together with the base type. They are given a "List" suffix to the base type name.
 
 > compositetype|Compositetype -> Compositetype, CompositetypeList
+>
 > enumerationType -> EnumerationType -> EnumerationType, EnumerationTypeList
 
-The generated go type <type> is defined so that the associated *<type> type implements the mal.Element interface.
+The generated go type \<type> is defined so that the associated *<type> type implements the mal.Element interface.
 
 A Composite type field is generally declared as a go pointer if the field is nullable, and as a type value if it is not nullable.
 
 Enumeration values are defined as simili constants, i.e. as variables with an upper letters name.
 
-> <enumX> <value1> -> <area|service>.<ENUMX>_<VALUE1>
+> \<enumX> \<value1> -> \<area|service>.\<ENUMX>\_\<VALUE1>
 
 ### constant values
 
 Constant values such as area or service numbers are defined in their respective area or service package. They can be found in the helper.go files generated in their respective directories. They should be mostly hidden by the use of the generated stubs.
 
-> <area number> -> <area>.AREA_NUMBER
-> <service number> -> <service>.SERVICE_NUMBER
-> <operation number> -> <service>.<OPERATION>_OPERATION_NUMBER
+> \<area number> -> \<area>.AREA\_NUMBER
+>
+> \<service number> -> \<service>.SERVICE\_NUMBER
+>
+> \<operation number> -> \<service>.\<OPERATION>\_OPERATION\_NUMBER
 
 ### provider stubs
 
@@ -76,9 +81,9 @@ The malgo API defines a provider as a set of handlers registered in a context to
 
 The provider stubs of a service are defined directly in the service package. They are made of three entities: a provider interface, a provider structure, and a provider helper.
 
-The provider interface is a go interface named <service>.ProviderInterface. It defines a function for each operation defined in the service. The programmer supplies a provider to the mal as an object (go structure named MyProvider in the example below) implementing this interface. It is registered using a NewProvider generated function in the service.
+The provider interface is a go interface named \<service>.ProviderInterface. It defines a function for each operation defined in the service. The programmer supplies a provider to the mal as an object (go structure named MyProvider in the example below) implementing this interface. It is registered using a NewProvider generated function in the service.
 
-The provider structure is a go structure named <service>.Provider. It is created and returned by the call to <service>.NewProvider. A mal.ClientContext is automatically created by the call, so that the function Close should eventually be called on this structure.
+The provider structure is a go structure named \<service>.Provider. It is created and returned by the call to \<service>.NewProvider. A mal.ClientContext is automatically created by the call, so that the function Close should eventually be called on this structure.
 
 The provider helper is a go structure which is created and passed to the implementation each time an operation is called on the service. It encapsulates the mal.Transaction concept of the mal API. Helper structures are defined one for each operation of the service. The helper is typed and named by the operation, it provides functions related to the operation Interaction Pattern, with parameters as declared in the xml operation message.
 
@@ -103,9 +108,9 @@ The provider helper is a go structure which is created and passed to the impleme
 The malgo API provides a consumer with mal.Operation objects. An Operation object must be created (or reused) for each call to a service. The mal.Operation object is typed by the Interaction Pattern of the called service.  
 The generated consumer stubs provides a similar interface, except that the generated operation objects are typed by the operation itself, enabling to hide all the coding/decoding of the parameters.
 
-The consumer stubs of a service are defined directly in the service package. They are made of an initialisation function Init, and of a set of operation structures, one for each operation of the service.
+The consumer stubs of a service are defined directly in the service package. They are made of an initialization function Init, and of a set of operation structures, one for each operation of the service.
 
-The operation specific structure is named <service>.<Operation>Operation. It is created by a call to the generated function <service>.New<Operation>Operation. It defines functions related to the Interaction Pattern of the operation, exactly as the original mal API does.
+The operation specific structure is named \<service>.\<Operation>Operation. It is created by a call to the generated function \<service>.New\<Operation>Operation. It defines functions related to the Interaction Pattern of the operation, exactly as the original mal API does.
 
 	ctx, err := mal.NewContext(consumer_url)
 	defer ctx.Close()
@@ -176,7 +181,7 @@ In the provider implementation code, the error may be signaled by returning a Ma
 A small suite of tests is provided as a generator_test.go go file and a set of xml files. In order to execute the tests:
 
 - process the xml files with the generator
-- export GOPATH="<path to the generated files>;<path to malgo>;<path to the local test file>"
+- export GOPATH="\<path to the generated files>;\<path to malgo>;\<path to the local test file>"
 - go test -v generator\_test.go
 
 ### Generating COM area
@@ -198,10 +203,6 @@ The xml input files are processed in lexical order. If there exist dependencies 
 The MAL area cannot be processed by the generator. Moreover the malgo implementation has not been changed to reflect the new go language mapping defined along with the generator. However a compatibility file named newmapping.go has been defined so that clients may use the new language mapping, including to the MAL area.
 
 The generator makes use of this compatibility file and generates standard mapping code including for the MAL area.
-
-### Broker stubs
-
-The broker part of the stubs of a PubSub operation is not generated. Only the consumer part is generated (publisher and subscriber).
 
 ### Publish errors
 
