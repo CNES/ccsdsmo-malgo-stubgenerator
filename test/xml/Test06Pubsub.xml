@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mal:specification xmlns:com="http://www.ccsds.org/schema/COMSchema"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:mal="http://www.ccsds.org/schema/ServiceSchema"
+                   comment="TestPubsub.xml">
+  <mal:area name="TestPubsubArea" number="1006" version="1"
+            comment="Test the Pubsub IP.">
+    <mal:service xsi:type="com:ExtendedServiceType" name="TestPubsub1" number="1">
+      <mal:capabilitySet number="1">
+        <mal:pubsubIP name="dopubsub" number="1" supportInReplay="true"
+                      comment="Publish ordered MAL::Integer starting from 0.">
+          <mal:messages>
+            <mal:publishNotify>
+              <mal:field name="value">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:publishNotify>
+          </mal:messages>
+        </mal:pubsubIP>
+      </mal:capabilitySet>
+    </mal:service>
+  </mal:area>
+</mal:specification>

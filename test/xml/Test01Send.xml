@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mal:specification xmlns:com="http://www.ccsds.org/schema/COMSchema"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:mal="http://www.ccsds.org/schema/ServiceSchema"
+                   comment="TestSend.xml">
+  <mal:area name="TestSendArea" number="1001" version="1"
+            comment="Test the Send IP.">
+    <mal:service xsi:type="com:ExtendedServiceType" name="TestSend1" number="1">
+      <mal:capabilitySet number="1">
+        <mal:sendIP name="dosend" number="1" supportInReplay="true"
+                      comment="Send a MAL::Integer.">
+          <mal:messages>
+            <mal:send>
+              <mal:field name="value">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:send>
+          </mal:messages>
+        </mal:sendIP>
+      </mal:capabilitySet>
+    </mal:service>
+  </mal:area>
+</mal:specification>

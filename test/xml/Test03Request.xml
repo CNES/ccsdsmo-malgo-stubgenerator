@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mal:specification xmlns:com="http://www.ccsds.org/schema/COMSchema"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:mal="http://www.ccsds.org/schema/ServiceSchema"
+                   comment="TestRequest.xml">
+  <mal:area name="TestRequestArea" number="1003" version="1"
+            comment="Test the Request IP.">
+    <mal:service xsi:type="com:ExtendedServiceType" name="TestRequest1" number="1">
+      <mal:capabilitySet number="1">
+        <mal:requestIP name="dorequest" number="1" supportInReplay="true"
+                      comment="Request a MAL::Integer - reply the integer.">
+          <mal:messages>
+            <mal:request>
+              <mal:field name="valueIn">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:request>
+            <mal:response>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:response>
+          </mal:messages>
+        </mal:requestIP>
+      </mal:capabilitySet>
+      
+      <mal:capabilitySet number="2">
+        <mal:requestIP name="testEnum" number="2" supportInReplay="true"
+                      comment="Request IN - reply OUT.">
+          <mal:messages>
+            <mal:request>
+              <mal:field name="valueIn">
+                <mal:type name="InOut" area="TestRequestArea"/>
+              </mal:field>
+            </mal:request>
+            <mal:response>
+              <mal:field name="valueOut">
+                <mal:type name="InOut" area="TestRequestArea"/>
+              </mal:field>
+            </mal:response>
+          </mal:messages>
+        </mal:requestIP>
+      </mal:capabilitySet>
+      
+    </mal:service>
+    <mal:dataTypes>
+      <mal:enumeration name="InOut" shortFormPart="1"
+                       comment="Test enumeration as area type.">
+        <mal:item value="IN" nvalue="1" comment="test input parameter."/>
+        <mal:item value="OUT" nvalue="2" comment="expected return parameter."/>
+      </mal:enumeration>
+    </mal:dataTypes>
+  </mal:area>
+</mal:specification>

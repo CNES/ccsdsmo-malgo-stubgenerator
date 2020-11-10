@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mal:specification xmlns:com="http://www.ccsds.org/schema/COMSchema"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:mal="http://www.ccsds.org/schema/ServiceSchema"
+                   comment="TestInvoke.xml">
+  <mal:area name="TestInvokeArea" number="1004" version="1"
+            comment="Test the Invoke IP.">
+    <mal:service xsi:type="com:ExtendedServiceType" name="TestInvoke1" number="1">
+      <mal:capabilitySet number="1">
+        <mal:invokeIP name="doinvoke" number="1" supportInReplay="true"
+                      comment="Invoke a MAL::Integer - ack the integer - reply the next integer.">
+          <mal:messages>
+            <mal:invoke>
+              <mal:field name="valueIn">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:invoke>
+            <mal:acknowledgement>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:acknowledgement>
+            <mal:response>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:response>
+          </mal:messages>
+        </mal:invokeIP>
+      </mal:capabilitySet>
+    </mal:service>
+  </mal:area>
+</mal:specification>

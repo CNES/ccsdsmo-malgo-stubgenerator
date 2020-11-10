@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mal:specification xmlns:mal="http://www.ccsds.org/schema/ServiceSchema">
+  <mal:area name="EnumMAL" number="101" version="1">
+    <mal:dataTypes>
+    	<mal:enumeration name="InteractionType" shortFormPart="19"
+                       comment="InteractionType is an enumeration holding the possible interaction pattern types.">
+        <mal:item value="SEND" nvalue="1" comment="Used for Send interactions."/>
+        <mal:item value="SUBMIT" nvalue="2" comment="Used for Submit interactions."/>
+        <mal:item value="REQUEST" nvalue="3" comment="Used for Request interactions."/>
+        <mal:item value="INVOKE" nvalue="4" comment="Used for Invoke interactions."/>
+        <mal:item value="PROGRESS" nvalue="5" comment="Used for Progress interactions."/>
+        <mal:item value="PUBSUB" nvalue="6" comment="Used for Publish/Subscribe interactions."/>
+      </mal:enumeration>
+      <mal:enumeration name="SessionType" shortFormPart="20"
+                       comment="SessionType is an enumeration holding the session types.">
+        <mal:item value="LIVE" nvalue="1" comment="Used for Live sessions."/>
+        <mal:item value="SIMULATION" nvalue="2" comment="Used for Simulation sessions."/>
+        <mal:item value="REPLAY" nvalue="3" comment="Used for Replay sessions."/>
+      </mal:enumeration>
+      <mal:enumeration name="QoSLevel" shortFormPart="21"
+                       comment="QoSLevel is an enumeration holding the possible QoS levels.">
+        <mal:item value="BESTEFFORT" nvalue="1" comment="Used for Best Effort QoS Level."/>
+        <mal:item value="ASSURED" nvalue="2" comment="Used for Assured QoS Level."/>
+        <mal:item value="QUEUED" nvalue="3" comment="Used for Queued QoS Level."/>
+        <mal:item value="TIMELY" nvalue="4" comment="Used for Timely QoS Level."/>
+      </mal:enumeration>
+      <mal:enumeration name="UpdateType" shortFormPart="22"
+                       comment="UpdateType is an enumeration holding the possible Update types.">
+        <mal:item value="CREATION" nvalue="1"
+                  comment="Update is notification of the creation of the item."/>
+        <mal:item value="UPDATE" nvalue="2"
+                  comment="Update is just a periodic update of the item and has not changed its value."/>
+        <mal:item value="MODIFICATION" nvalue="3"
+                  comment="Update is for a changed value or modification of the item."/>
+        <mal:item value="DELETION" nvalue="4"
+                  comment="Update is notification of the removal of the item."/>
+      </mal:enumeration>
+    </mal:dataTypes>
+  </mal:area>
+</mal:specification>

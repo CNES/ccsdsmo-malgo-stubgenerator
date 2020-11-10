@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mal:specification xmlns:com="http://www.ccsds.org/schema/COMSchema"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:mal="http://www.ccsds.org/schema/ServiceSchema"
+                   comment="TestProgress.xml">
+  <mal:area name="TestProgressArea" number="1005" version="1"
+            comment="Test the Progress IP.">
+    <mal:service xsi:type="com:ExtendedServiceType" name="TestProgress1" number="1">
+      <mal:capabilitySet number="1">
+        <mal:progressIP name="doprogress" number="1" supportInReplay="true"
+                      comment="Progress two MAL::Integer (base, range) - ack the base - update intermediates - reply base+range.">
+          <mal:messages>
+            <mal:progress>
+              <mal:field name="baseIn">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+              <mal:field name="rangeIn">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:progress>
+            <mal:acknowledgement>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:acknowledgement>
+            <mal:update>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:update>
+            <mal:response>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:response>
+          </mal:messages>
+        </mal:progressIP>
+      </mal:capabilitySet>
+    </mal:service>
+    <mal:service xsi:type="com:ExtendedServiceType" name="TestInout" number="2">
+      <mal:capabilitySet number="1">
+        <mal:progressIP name="listEnum" number="1" supportInReplay="true"
+                      comment="Progress the list of enum values - ack # of values - update all values - void reply.">
+          <mal:messages>
+            <mal:progress>
+              <mal:field name="enum">
+                <mal:type list="true" name="InOut" area="testrequestarea" />
+              </mal:field>
+            </mal:progress>
+            <mal:acknowledgement>
+              <mal:field name="valueOut">
+                <mal:type name="Integer" area="MAL"/>
+              </mal:field>
+            </mal:acknowledgement>
+            <mal:update>
+              <mal:field name="valueOut">
+                <mal:type name="InOut" area="testrequestarea"/>
+              </mal:field>
+            </mal:update>
+            <mal:response>
+            </mal:response>
+          </mal:messages>
+        </mal:progressIP>
+      </mal:capabilitySet>
+    </mal:service>
+  </mal:area>
+</mal:specification>
