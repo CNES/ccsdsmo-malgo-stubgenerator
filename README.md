@@ -117,6 +117,38 @@ The operation specific structure is named <service>.<Operation>Operation. It is 
 	ackValue, err := operation.Invoke(...)
 	respValue, err := operation.GetResponse()
 
+### stubs for a PubSub operation
+
+A PubSub operation is a special case as it involves three actors instead of just a consumer and a provider. A more or less independant broker represents the provider side of the IP, while two consumers interact with the broker as a publisher and a subscriber. The malgo API provides two separate mal.Operation objects to help implement the consumer sides, and provides a generic implementation of the broker side in the mal.broker package. The generated consumer stubs for the PubSub operation cover both sides, and they are very similar to what is generated for the other IPs.
+
+	ctx, err := mal.NewContext(consumer_url)
+	defer ctx.Close()
+	cctx, err := malapi.NewClientContext(ctx, "consumer")
+	defer cctx.Close()
+	err = <service>.Init(cctx)
+	
+	publishOp, err := <service>.New<Operation>PublisherOperation(brokerUri)
+	err = publishOp.Register(<entityKey lists>)
+	publishOp.Publish(updtHeaders, <updtVal type 1>, <updtVal type 2>)
+	
+	subscribeOp, err := <service>.New<Operation>SubscriberOperation(brokerUri)
+	err = subscribeOp.Register(<subscriptions>)
+	subId, updtHeaders, <updtVal type 1>, <updtVal type 2>, err := subscribeOp.GetNotify()
+
+The generic broker of the mal.broker package may be deployed either as a standalone broker, or as a broker integrated with the publisher consumer. Examples of those two usages are provided in the tests of the mal.broker package. The generated provider stubs help to deploy a standalone broker by hiding most of the required processing. In that case a dedicated broker must be defined for each operation. All the brokers may use the same mal.Context.
+
+	ctx, err := mal.NewContext(broker_url)
+	defer ctx.Close()
+	mybroker, err := <service>.New<Operation>Broker(ctx, "broker")
+	defer mybroker.Close()
+	brokerUri := mybroker.Uri()
+
+The generated stubs for deploying a broker integrated with the publisher are integrated with the publisher consumer stubs. The only difference from a standard publisher consumer is that the operation constructor takes nil as an input broker URI. There is no other instruction which concerns the broker; everything is hidden in the publisher stubs. In that case the subscriber consumer must connect to the publisher consumer URI.
+
+	subscribeOp, err := <service>.New<Operation>SubscriberOperation(nil)
+
+The provider stubs use the generic broker implementation of the mal.broker package. If a specific behaviour needs to be implemented, use the malgo API instead.
+
 ### errors
 
 The MAL specification defines errors as special messages in an Interaction Pattern with an error code and an optional extra information field whose type is variable. The type of the extra information field actually depends on the error code and on the operation which sends the error message. The generated stubs provides a limited help to hide the coding/decoding of this field.
